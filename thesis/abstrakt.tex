@@ -1,0 +1,11 @@
+\chapter*{Abstrakt}
+Die Beliebtheit sozialer Netzwerke wie Facebook und Twitter, zusammen mit Plattformen zum Speichern und Teilen von Medien wie Flickr und die Allgegenwart moderner Smartphones und Kameras mit GPS-Sensoren haben zu einer riesigen, frei verfügbaren Sammlung von Daten geführt, die Positions- und Textinformation kombinieren. Diese Daten können benutzt werden um Suchergebnisse zu verbessern, Werbung gezielter anzubringen, und sogar Menschen und Regierungen im Falle von Umweltkatastrophen zu helfen, zum Beispiel als Frühwarnsystem. Geographische Themenfindung versucht bedeutungsvolle Themen für bestimmte Gebiete zu finden. Cluster Algorithmen können mit geeigneten Distanzfunktionen hierzu benutzt werden.
+
+Zwei solcher Funktionen werden in dieser Arbeit verglichen, indem DBSCAN benutzt wird, um Themen zu finden. Ein einfacher Vektor-basierter Ansatz, der Jaccard-Distanz zwischen Textvektoren und euklidische Distanz zwischen Standortdaten linear kombiniert. Der zweite Ansatz baut auf einer Delaunay Triangulation der Standortdaten auf. Kombiniert mit zusätzlichen Knoten\,/\,Kanten basierend auf den restlichen Attributen (hier Text) entsteht ein Graph, der durch ein Random Walk Model benutzt wird, um Distanzen zwischen den Knoten zu bestimmen. Ein weiterer wichtiger Teil der Arbeit ist die quantitative Auswertung der gefundenen geographischen Themen mittels vier herkömmlicher Bewertungsverfahren (auf Basis der genannten Jaccard- und euklidischen Distanzen) und wie gut diese Verfahren die Qualität der Themen widerspiegeln können. Die benutzen Datensätze zur Evaluation beinhalten bis zu einer Million Dokumente, was in dieser Größenordnung kaum vorkommt.
+
+\enlargethispage*{3\baselineskip}
+\vspace{0.5em}
+\noindent
+Die Ergebnisse zeigen, dass beide Distanzfunktionen imstande sind, grundlegende geographische Themen zu finden, wobei der Graph Ansatz durchgehend besser abschneidet.
+
+Die Bewertungsverfahren, allen voran Silhouete width, geben allgemeine Hinweise zur Güte der Themen, aber sind nicht geeignet, verschiedene Ergebnisse gefundener Themen direkt miteinander zu vergleichen.

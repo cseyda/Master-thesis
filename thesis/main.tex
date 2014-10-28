@@ -1,0 +1,247 @@
+% !TeX program = lualatex
+% !TeX root = main.tex
+
+% This template was initially provided by Dulip Withanage.
+% Modifications for the database systems research group
+% were made by Conny Junghans and Jannik Strötgen.
+\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass[
+     12pt,         % font size
+     a4paper,      % paper format
+     BCOR10mm,     % binding correction
+     DIV14,        % stripe size for margin calculation
+     listof=totoc,   % table listing in toc
+     bibliography=totoc,     % bibliography in toc
+     index=totoc,     % index in toc
+%     parskip       % paragraph skip instad of paragraph indent
+	%draft
+     ]{scrreprt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% PACKAGES:
+\usepackage{scrhack}
+% Use German :
+\usepackage[UKenglish]{babel}
+
+\usepackage{multicol}
+\usepackage{multirow}
+
+% Microtyping:
+\usepackage{microtype}
+% System fonts (LuaLaTeX):
+
+%\usepackage{cleveref}
+
+\usepackage{fontspec}
+%\newfontfeature{Microtype}{protrusion=default;expansion=default;} % micro/lua fix
+
+
+%\directlua{fonts.protrusions.setups.default.factor=.5}
+\usepackage{amssymb}
+
+\usepackage[]{mathtools}%fleqn
+
+\usepackage{unicode-math}
+
+\setmainfont[Ligatures=TeX,Numbers=OldStyle]{Linux Libertine O}
+\setsansfont[Ligatures=TeX,Numbers=OldStyle]{Linux Biolinum O}
+%\setmonofont[Scale=0.8]{DejaVu Sans Mono}
+\setmonofont[Scale=0.9]{Linux Libertine Mono}
+%\setmathfont{Asana-Math.otf}
+%\setmathfont{XITS Math}
+
+\usepackage{appendix}
+
+\usepackage[english=british]{csquotes}
+
+% Notes
+\usepackage{todonotes}
+% Index-generation
+\usepackage{makeidx}
+% Einbinden von URLs:
+\usepackage{url}
+% Special \LaTex symbols (e.g. \BibTeX):
+\usepackage{doc}
+% Include Graphic-files:
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{siunitx}
+% Include doc++ generated tex-files:
+%\usepackage{docxx}
+% Include PDF links
+%\usepackage[pdftex, bookmarks=true]{hyperref}
+\usepackage[url=false, backend=biber]{biblatex}
+\addbibresource{library.bib}
+
+%\usepackage{footnote}
+\usepackage[final]{listings}
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+%\algtext*{EndWhile}% Remove "end while" text
+%\algtext*{EndIf}% Remove "end if" text
+%\algtext*{EndFor}% Remove "end for" text
+%\algtext*{EndFunction}% Remove "end function" text
+
+%set to monospaced fonf
+\makeatletter
+\renewcommand{\ALG@beginalgorithmic}{\small}
+\makeatother
+
+
+\usepackage{afterpage}
+
+% Fuer anderthalbzeiligen Textsatz
+\usepackage{setspace}
+\usepackage{geometry}
+% hyperrefs in the documents
+\usepackage[bookmarks=true,colorlinks,pdfpagelabels,pdfstartview = FitH,bookmarksopen = true,bookmarksnumbered = true,linkcolor = black,plainpages = false,hypertexnames = false,citecolor = black,urlcolor=black]{hyperref} 
+%\usepackage{hyperref}
+
+\usepackage{floatpag}
+\floatpagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% OTHER SETTINGS:
+
+% Pagestyle:
+\pagestyle{headings}
+
+% Choose language
+\newcommand{\setlang}[1]{\selectlanguage{#1}\nonfrenchspacing}
+
+\begin{document}
+
+% TITLE:
+\pagenumbering{roman} 
+\begin{titlepage}
+
+
+\vspace*{1cm}
+\begin{center}
+\vspace*{3cm}
+\textbf{ 
+\Large Ruprecht-Karls-University Heidelberg\\
+\smallskip
+\Large Institute of Computer Science\\
+\smallskip
+\Large Database Systems Research\\
+\smallskip
+}
+
+\vspace{3cm}
+
+\textbf{\large Master Thesis} % Studienarbeit, Interdisziplinaeres Projekt
+
+\vspace{0.5\baselineskip}
+{\huge
+Comparison of graph-based and vector-space geographical topic detection
+}
+\end{center}
+
+\vfill 
+
+{\large
+\begin{tabular}[l]{ll}
+Name: & Christian Seyda\\
+Student number: & 2600280\\
+Supervised by: &  Prof. Dr. Michael Gertz\\
+				& Christian Sengstock\\
+Date of submission: & \today
+\end{tabular}
+}
+
+\end{titlepage}
+
+\onehalfspacing
+
+\thispagestyle{empty}
+
+\vspace*{100pt}
+%Ich versichere, dass ich diese Master-Arbeit selbstständig verfasst und nur die angegebenen Quellen und Hilfsmittel verwendet habe.
+\hspace{-1em} I herewith declare, that I wrote this master's thesis on my own and did not use any unnamed sources or aid.
+\vspace*{50pt}
+
+
+Date of submission: \today
+\newpage
+
+% Add a brief summary of your topic and contributions (Zusammenfassung) in German and in English:
+%\chapter*{Zusammenfassung}
+%\input{zusammenfassung}
+%\newpage
+
+%\chapter*{Abstract}
+\input{abstrakt}
+\input{abstract}
+%\newpage
+
+% MAIN PART:
+% Table of contents (Inhaltsveryeichnis)
+\tableofcontents
+\cleardoublepage
+ 
+
+% List of figures (Abbildungsverzeichnis):
+\listoffigures
+% List of tables (Tabellenverzeichnis):
+\listoftables
+\newpage
+\pagenumbering{arabic}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Here, the actual content of your thesis begins
+% You can either put all the text here or use individual files to store the chapters of your thesis.
+% Below are templates for both alternatives.
+
+%\chapter{Einleitung}\label{intro}
+%This chapter contains an overview of the topic as well as the goals and contributions of your work.
+
+%\section{Motivation}
+
+\input{motivation}
+
+\input{geographical_topics}
+
+\input{clustering}
+
+\input{graph}
+
+\input{evaluation}
+
+\input{future}
+
+\input{appendix}
+
+%\chapter{Introduction}
+%\section{Spatial data}
+%\subsection{Graph representation}
+
+%\chapter{Algorithms}
+
+%\chapter{Implementation}
+
+%\chapter{Evaluation}
+
+%\chapter{Summary}
+
+%\chapter{Appendix}
+
+
+
+
+
+
+% References (Literaturverzeichnis):
+% a) Style (with abbreviations: use alpha):
+%\bibliographystyle{unsrt}
+% b) The File:
+%\bibliography{library.bib}
+\printbibliography
+
+\end{document}

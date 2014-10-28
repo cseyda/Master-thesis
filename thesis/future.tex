@@ -1,0 +1,27 @@
+\chapter{Summary and future work}\label{chap:future}
+%\emph{%
+%This final chapter gives a short overview about what has been shown in this thesis, and which topics and work c
+%}
+
+%\section{Summary}
+%own contributions, was wurde gezeigt
+
+In summery, two different distance metrics were implemented, and used with the cluster algorithm DBSCAN to extract geographical topics from big real world datasets. The first distance metric was a naive vector based approach with a combined distance based on an euclidean distance on GPS data, and a jaccard distance based on text data. The second distance metric was based on random walks on graphs. Base graphs were generated with Delaunay triangulations based on the GPS data, and augmented edges and nodes were added based on the text data. Qualitative evaluation showed, that both methods can give reasonable results, if the used dataset is suited. The graph based distance metric performed overall better than the vector based approach.
+
+Quantitative evaluation was conducted with four cluster evaluation measures based on basic distance measures between location and text, in order to reveal their usefulness in comparing different geographical topic results and in indicating the general goodness of the overall clustering results. Quantitative evaluation with datasets that big is usually not done. The best results were delivered by the measure Silhouette width, with very good indications of good clusterings. But performing meaningful comparisons without qualitative evaluation is not possible with this setup. Nonetheless $SW$ with these basic distances is a useful tool in filtering the bad results, and leave the good ones for further subjective investigation.
+
+%\section{Future work}
+Which leads to different possibles for future work.
+\begin{description}
+\item[Graph distance] More attributes can be used, like timestamps or user ids. The graph distance is very flexible regarding such extensions. General idea behind this is, that a user is more likely to write about a few topics, which would group them even more. The same applies to timestamps.
+
+Another idea is to connect the augmented nodes in order to get higher probabilities among attributes often used together. But this would require to remove certain edges between structural and augmented nodes to have no double connections through the same attributes.
+
+\item[Cluster Quality measures] Silhouette width is a good basis, and other distance functions could result in results more comparable. Considering landmarks or regional topics, different distance functions could be used to evaluate different aspects of the topics. Basic euclidean for landmarks and events, and other functions which promote other nodes at certain distances and punish nodes which are near for regional or global topics.
+
+Different functions for comparing text should be useful as well, which leads to the next work idea.
+
+\item[Datasets] The difference between the performances in topic generation using dataset A to B and C was quite big. The only preprocessing of the datasets was the removal of common stop words. Results show many, essentially same words listed individually. Performing more preprocessing to align words (by reducing plurals for example) or splitting composited words could result in better results or could enable other distance functions.
+\end{description}
+%
+Usage of the geographic topic discovery as described in this thesis for real world scenarios is unlikely given better qualitative results \cite{Sengstock2012a, Yin2011, Hong2012}. But using Silhouette width seems to be viable for general evaluation of geographic topic algorithms.

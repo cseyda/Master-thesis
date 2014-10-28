@@ -1,0 +1,197 @@
+% !TeX program = lualatex
+% !TeX root = main.tex
+
+\chapter{Geographical Topic Discovery}
+\emph{%
+This chapter sets the background of geographic topic detection and employs the basic definitions of those. Related works and the Problem statement are described at the end of this chapter.
+}\label{chap:topics}
+
+
+\section{Background and definitions}
+Data source for geographical topic discovery can be every web-service collecting geo-referenced data with access for developers and researchers. Popular ones are Twitter, Flicker, Open Street Map.
+
+A geo-referenced dataset $D$ consists of different documents $\{d_1,\dots, d_n\}$. Each document $d$ has at least the following two \emph{attributes}:
+\begin{description}
+\item[text,] which is essentially a \enquote{bag of words}: a vector of different individual words or \emph{tags}.
+\item[location,] which is a point $p \in \mathbb{R}^2$ determining a position on earth. $p$ is typically a GPS position, whose two parts are called \emph{longitude} and \emph{latitude}.
+\end{description}
+%
+Other attributes are possible, like user identification, timestamp or user gender, but that depends on the used source. 
+
+When using a vector-based model, each of those attributes are encoded in a vector $v^i_1, \dots, v^i_n$ for any given document $d_i$. Algorithms like the used distance measures then operate on these vectors. The vector-representation for the location is just the coordinates $lon, lat$. Text is represented by a vector whose length $m$ is the number of unique words in the dataset. Each word of these words is represented by a position in the vector. Each document then sets these positions to the number of occurrences in its text attribute. This model is also called bag-of-words, because it does not keep the positional information of the original text attribute. This means the original text attribute can not be deduced based on this vector. The distance functions used on the vector representations of location and text are described in section~\ref{sec:distance}.
+
+Graphs are another way of symbolising the data. A graph $G = (V, E)$ consists of a set of \emph{nodes} $V$ and a list of \emph{edges} $E$ connecting different nodes. $v, w \in V$ and an edge $e_{v\,w} \in E$ connecting these nodes can have different properties, like weights or probabilities. Edges can have different directions, so that $e_{v\,w} \neq e_{w\,v}$. An example of a graph is a street map. Nodes are different cities, villages or other travelling targets. Edges are the streets connecting them, which represents the relationship of being able to travel from one point of interest to the next. Attributes are the names of the cities, or the speed limit of the streets. Defining the distance between two cities (nodes) can now be done based on the different streets (edges), for example the shortest\,/\,fastest route, the number of routes with maximal distance or travelling time and so on.
+
+There is no common definition about what a \emph{geographical topic} is exactly, but the general idea is like: \enquote*{A geographical topic is a spatially coherent meaningful theme. In other words, the words that are often close in space are clustered in a topic.}\cite{Yin2011} A proper definition is usually coupled with a specific use case or a particular technique. Cluster analysis is used in this thesis to find geographical topics.
+
+\emph{Cluster analysis} is the task of grouping a set of objects $\{o_1, \dots, o_n\}$ in such a way that objects in the same group are more similar to each other than to those in other groups. Those groups are called \emph{clusters}. The result of a clustering algorithm performing this analysis is a \emph{clustering}: a set of clusters $c_1, \dots, c_m$. Similarity is expressed as a distance function $f: o_i \times o_j \rightarrow \mathbb{R}$.
+
+%Definition
+\vspace{.5em}
+\noindent
+A geographic topic is defined in the following way. Given a 
+\begin{itemize}
+\item geo-referenced dataset $D=\{d_1,\dots, d_n\}$, 
+\item a distance function $f(d_i, d_j)$, which utilises at least the document attributes $location$ and $text$, and 
+\item a clustering algorithm: $D \times f \rightarrow c_1, \dots, c_m$, 
+\end{itemize}
+a \emph{geographic topic} is then represented by each cluster $c_i$.
+
+\vspace{.5em}
+\noindent
+How well the clusters ${c1, \dots, c_m}$ are representing meaningful geographical topics is obviously controlled by those given parts.
+
+Examples for geographic topics are cities or countries, events and festivals, countrysides like mountains and seas, and so forth. They are so different in meaning and space, that further disambiguation is helpful for understanding and comparing different types of and works about geographic topics. The following classification by \cite{Sengstock2011, Sengstock2012a} presents a good overview which fits for the most cases:
+\begin{description}
+\item[Global] Topics which have a very large spacial scale; they can be as large as the dataset itself. Other topics are usually covered by this.
+
+Examples: countries and continents
+%The spatial distribution of a feature being used equally likely by users all over geographic space is expected to follow a baseline distribution of the document collection. Such a feature is not informative to describe the semantics of geographic locations, except for the amount of user contribution. We assume the baseline distribution B to be the logged number of distinct users at a location l i . Then B(l i ) is the number of distinct users at l i . A feature with a distribution similar to B is expected to be a global feature.
+%Global Feature: A global feature is distributed in the whole area of interest. A global feature is not distributed randomly (Poisson) but follows the density of the points in the dataset. This means that a global feature is also clustered. However, such a point pat- tern will be most similar to the point pattern of the complete dataset R.
+
+\item[Landmark] This classification describes topics which are rather unique in the dataset and allows for labelling or describing a very specific place.
+
+Examples: city and location names
+%A feature might only be used around a single location l i (e.g., a city or place name). Such a feature allows to identify a location and acts as a descriptive label. However, such a feature will not allow us to discriminate between large proportions of geographic space, except between the location where the label occurs and the rest. We call a feature exhibiting such a property a landmark feature.
+%A landmark feature describes a unique place on Earth, like a city or a place name. In this case, the point pattern shows a single cluster.
+
+\item[Regional] Topics describing the environment. Landscapes and general appearance of this space.
+
+Examples: forests, seas, mountains
+%A feature might be used in a substantial part of geographic space. However, its usage might differ significantly from the baseline distribution B. Such a feature is expected to contain relevant geographic information for large parts of the geographic space, allowing us to compare locations based on their semantics. We call such a geographic feature a regional feature.
+%Regional Feature: A regional feature occurs in a broad region on Earth. A regional feature might occur at several places on Earth, like the feature “forest”. In this case, the pattern is clustered within the radius of a typical region.
+
+\item[Local] These topics are similar to landmark topics, but more general and not unique. They can appear everywhere and a rather focussed on a single spot. Events and festivals count here as well.
+
+Examples: supermarkets, restaurants, conferences
+
+%A local feature occurs locally at several places on Earth, like a feature occurring mainly in cities. The point pattern is highly clustered within the radius of a city area.
+\end{description}
+%
+These descriptions and examples are very general to be adaptable to different use cases and dataset scales. The scale (or scope) is here very important. For a dataset with points all over the world, factories from different companies can be classified as local topics, while a \enquote{named} forest can be a landmark. Using a dataset which is completely covered by this forest, a factory can be a landmark, and this very forest is a regional or even global topic.
+
+% use cases
+
+
+\section{Related Work}
+The related work is focussed on how geographic topics can be modelled, how the results then are evaluated and how graphs algorithms can be used on this task.
+
+The following contributions use generative models to find geographic topics. This means, instead of trying to calculate the conditional probability distribution of a topic given a tweet $p(topic | tweet)$, the joint probability $p(tweet, topic)$ is modelled. This joint probability can be used to \emph{generate} likely ($topic$, $tweet$)-pairs, thus generative model. Using an inference algorithm like naive Bayes or expectation maximisation, the joint probabilities can be transformed to conditional probabilities and then used to classify tweets into topics.
+
+\begin{itemize}
+\item \textcite{Sizov2010} proposes GeoFolk. This model aims to construct better algorithms for content management, retrieval, and sharing in social media. GeoFolk assumes that each topic generates latitude and longitude from two topic-specific Gaussian distributions. The approach is based on multi-modal Bayesian models which allows integration of spatial semantics of social media in a well-formed, probabilistic manner. This work uses Gibbs Sampling for inference.
+ 
+Evaluation is done with a Flickr dataset containing only resources from the greater London area (28\,770 points). Results are compared to LDA (Latent Dirichlet allocation, also a Bayesian model) with Deviance Information Criterion (DIC), which considers  the corresponding model complexity and trade-offs between the fit of the data to the model. Manually labelled data was also used to compare accuracy in classification and recommendation tasks. 
+
+\item \textcite{Yin2011} describes three ways of modelling geographical topics: a location-driven, a text-driven model (which are later used as a comparison baseline) and a unified model called LGTA (Latent Geographical Topic Analysis). The idea here is the assumption of a set of regions who generates the topics (instead of documents generating the topics). Two words belonging to the same region are close in space, and should be more likely to be clustered into the same geographic topic.
+
+%Yin et al. [17]: Their method is essentially to have
+%a global set of topics shared across all latent regions.
+%There is no regional language models in the model.
+%Besides, no user level preferences are learned in the
+%model. The prediction is done by two steps: 1) choos-
+%ing the region index that can maximize the test tweet
+%likelihood, and 2) use the mean location of the region
+%as the predicted location. We re-implemented their
+%method in our work. This method is denoted as Base-
+%line.
+%The inference is done by MAP-style EM. 
+
+%In this paper, we are interested in two questions: (1) how to
+%discover different topics of interests that are coherent in geo-
+%graphical regions? (2) how to compare several topics across
+%different geographical locations? 
+
+%To answer these questions,
+%this paper proposes and compares three ways of modeling ge-
+%ographical topics: location-driven model, text-driven model,
+%and a novel joint model called LGTA (Latent Geographical
+%Topic Analysis) that combines location and text. 
+
+%To make
+%a fair comparison, we collect several representative datasets
+%from Flickr website including Landscape, Activity, Manhat-
+%tan, National park, Festival, Car, and Food. The results
+%show that the first two methods work in some datasets but
+%fail in others. LGTA works well in all these datasets at
+%not only finding regions of interests but also providing ef-
+%fective comparisons of the topics across different locations.
+%The results confirm our hypothesis that the geographical
+%distributions can help modeling topics, while topics provide
+%important cues to group different geographical regions.
+
+Evaluation is done with different representative datasets from Flickr covering several topics: Landscape, Activity, Manhattan, National Park, Festival, Car and Food, each containing between 1\,751 and 151\,747 points. Comparison baseline techniques are the presented location- and text-driven models, as well as GeoFolk\cite{Sizov2010}. The models were evaluated using perplexity, which calculates how well a probability model $q$ predicts an unknown model $p$ based on test samples drawn from $p$. Results were also discussed based on expected amounts of found topics in the respective datasets and their visualisations.
+%  discussion and qualitative analysis
+
+\item \textcite{Hong2012} incorporates the information by which user a tweet was sent. The generative process is modelled on the assumptions, that words in a tweet are dependent on the location as well as the topic, which leads to different discussed topics in different locations, and finally that users only have distinct regions, where they live, and thus from where they sent tweets.
+
+% 1) How is information created and shared
+%across geographical locations, 2) How do spatial and linguis-
+%tic characteristics of people vary across regions, and 3) How
+%to model human mobility. 
+
+% In this paper we focus on
+%Twitter and present an algorithm by modeling diversity in
+%tweets based on topical diversity, geographical diversity, and
+%an interest distribution of the user. Furthermore, we take
+%the Markovian nature of a user’s location into account. Our
+%model exploits sparse factorial coding of the attributes, thus
+%allowing us to deal with a large and diverse set of covariates
+%efficiently. 
+
+%We show high accuracy in location estimation based on our
+%model. Moreover, the algorithm identifies interesting topics
+%based on location and language.
+
+Evaluation is based on a Twitter dataset with 573\,203 distinct tweets from 10\,000 users between January 2011 and May 2011, and a dataset from \url{http://www.ark.cs.cmu.edu/GeoText/} with 377\,616 messages from 9\,475 users. Both datasets are geo-tagged and locations are approximately within the United States. Comparison is done amongst others with \cite{Yin2011}, by predicting the location for every tweet and then calculating the distance to its real location.
+
+%The size of the dataset is significantly larger than the ones used in some similar studies (e.g, [7, 17]).
+\end{itemize}
+%
+The following are no generative models.
+
+\begin{itemize}
+\item \textcite{Sengstock2012a} examine the use of dimensionality reduction techniques PCA, ICA and Sparse PCA (SPCA) on a matrix of high-dimensional multivariate signals of geographic semantics in order to extract meaningful geographic features. % which are processed feature-vectors to represent the characteristics of a geographic location.
+Normalization of the data is used to find specifically landmark, global, ... topics.
+
+%In this work we present a framework for the unsupervised
+%extraction of latent geographic features from georeferenced
+%social media. 
+
+%A geographic feature represents a semantic
+%dimension of a location and can be seen as a sensor that
+%measures a signal of geographic semantics. Our goal is to
+%extract a small number of informative geographic features
+%from social media, to describe and explore geographic space,
+%and for subsequent spatial analysis, e.g., in market research.
+
+%We propose a framework that, first, transforms the unstruc-
+%tured and noisy geographic information in social media into
+%a high-dimensional multivariate signal of geographic seman-
+%tics. Then, we use dimensionality reduction to extract la-
+%tent geographic features. 
+
+%We conduct experiments using two
+%large-scale Flickr data sets covering the LA area and the
+%US. We show that dimensionality reduction techniques ex-
+%tracting sparse latent features find dimensions with higher
+%informational value. 
+
+%In addition, we show that prior nor-
+%malization can be used as a parameter in the exploration
+%process to extract features representing different geographic
+%characteristics, that is, landmarks, regional phenomena, or
+%global phenomena.
+Evaluation is done by using two Flickr datasets, covering LA with 245\,312 points, and the US with 5\,976\,689 points. PCA, ICA and SPCA are then qualitatively compared by discussing three selected geographic topics.
+
+
+\item \textcite{Yen2005} proposes the use of a distance metric called the Euclidian Commute Time (ECT) distance, which is based on a random walk model. The graph is derived from the data by connecting every node to its k nearest neighbours. This distance can then be used in every applicable clustering algorithm.
+
+Evaluation is done with synthetic datasets against normal euclidean distance. Results are visually examined and compared.
+
+\item \textcite{Cao2010} uses the graph concept to extract meaningful semantic locations (points of interest) from GPS data showing the movement of cars in daily use. This is accomplished by building a layered graph of two connected sub-graphs: a location-location graph, representing visits\,/\,stops on a trip and a user-location graph standing for users visiting certain locations. Clustering is used to group visit points. Then a combination of PageRank, HITS (both using a random walk distance), is used to find semantic locations.
+
+Evaluation is done on three subsets of the whole dataset obtained by 119 cars and originally 0.1 billion GPS records, distilled to 76\,139 stay points. The three subsets contain 352, and two times 1\,508 locations. Those locations where than manually annotated in order to use entropy, purity, and normalized mutual information (NMI) to evaluate the clustering. The smaller the entropy, the better a clustering method performs. For the other two measures, the larger, the better. Location significance ranking were evaluated with Mean Average Precision (MAP), Precision@n, and nDCG (normalized Discounted Cumulative Gain).
+\end{itemize}
+
+% Problem statement

@@ -1,0 +1,79 @@
+%\begin{table}%[h]
+%\caption{Five random walks with different lengths based on figure~\ref{fig:graph_for_examples} with transition matrix $P$.}\label{tbl:RW2}
+
+%\noindent\begin{minipage}{\textwidth}
+\centering
+\normalsize
+\captionof{table}[Random wlks with transition matrix.]{Five random walks with different lengths based on figure~\ref{fig:graph_for_examples} with transition matrix $P$.}\label{tbl:RW2}
+\begin{multicols}{2}
+\centering
+$l = 1 \equiv P^1$
+\vspace{-.5em}
+\[
+\begin{pmatrix*}[S]
+0.0	& 0.0	& 0.0	& 1.0\\
+0.0	& 0.0	& 0.5	& 0.5\\
+0.0	& 0.5	& 0.0	&0.5\\
+0.333	& 0.333	& 0.333	&0.0\text{\phantom{$00$}}
+\end{pmatrix*}
+\]\\
+%\vspace{1.em}
+
+$l = 2 \equiv P^2$
+\vspace{-.5em}
+\[
+\begin{pmatrix*}[S]
+0.333	& 0.333	& 0.333	& 0.0\\
+0.167	& 0.416	& 0.167	& 0.25\\
+0.167	& 0.167	& 0.415	& 0.25\\
+0.0	& 0.167	& 0.167	& 0.667
+\end{pmatrix*}
+\]\\
+
+$l = 3 \equiv P^3$
+\vspace{-.5em}
+\[
+\begin{pmatrix*}[S]
+0.0	    & 0.167	& 0.167	& 0.666\\
+0.083	& 0.167	& 0.292	& 0.458\\
+0.083	& 0.292	& 0.167	& 0.458\\
+0.222	& 0.306	& 0.306	& 0.166
+\end{pmatrix*}
+\]\\
+
+%\vspace{1.em}
+$l = 4 \equiv P^4$
+\vspace{-.5em}
+\[
+\begin{pmatrix*}[S]
+0.222	& 0.306	& 0.306	& 0.166\\
+0.153	& 0.298	& 0.236	& 0.312\\
+0.153	& 0.236	& 0.298	& 0.312\\
+0.056	& 0.208	& 0.208	& 0.528
+\end{pmatrix*}
+\]\\
+
+%\vspace{1.em}
+$n \rightarrow \infty, l = n \equiv P^n$
+\vspace{-.5em}
+\[
+\begin{pmatrix*}[S]
+0.125	& 0.250	& 0.250	& 0.375\\
+0.125	& 0.250	& 0.250	& 0.375\\
+0.125	& 0.250	& 0.250	& 0.375\\
+0.125	& 0.250	& 0.250	& 0.375
+\end{pmatrix*}
+\]\\
+
+%%%%%PHANTOM%%%%%%%%
+\phantom{
+$n \rightarrow \infty, l = n \equiv P$
+$\begin{pmatrix*}[S]
+0.125	& 0.250	& 0.250	& 0.375\\
+0.125	& 0.250	& 0.250	& 0.375\\
+0.125	& 0.250	& 0.250	& 0.375\\
+0.125	& 0.250	& 0.250	& 0.375
+\end{pmatrix*}$}
+\end{multicols}
+%\end{table}
+%\end{minipage}

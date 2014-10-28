@@ -1,0 +1,36 @@
+\chapter{Basics}
+\emph{%
+This chapter
+}
+%
+Spatial information entities (si-entities), for example Twitter tweets, Flickr image entries, or even Google queries, have the form of a 4-tuple with the following features: 
+\begin{equation*}
+si\text{-}entity = (location, keywords, time\text{-}stamp, sender),
+\end{equation*}
+where
+\begin{description}\setlength{\itemsep}{-2mm}
+\item[$location$] represents either the exact position based on GPS, or an approximation via IP address or triangulation with available WLANs.
+\item[$keywords$] are the text for the entity -- a search query, twitter message, user-generated tags, or something alike.
+\item[$time$-$stamp$] is the date and time the entity has been sent\,/\,posted.
+\item[$sender$] contains the user-name respectively -id of the entity source.
+\end{description}
+Using social network functionality, a fifth feature could be added, $receiver$, containing the same form of user identification, but for the target of the entity.
+
+Based on these features, similar si-entities can be grouped\,/\,clustered together. Similarity is usually defined as a distance function\,/\,metric -- the euclidean distance is a popular one. A metric $d(x,y)$ has to be non-negative ($d(x, y) \ge 0$), symmetric ($d(x, y) = d(y, x)$) and to follow the triangle inequality ($d(x, z) \le d(x, y) + d(y, z)$). Clustering is then just the search for elements close to each other. Of course there are other forms of clustering algorithms.
+%
+The distribution of the entities to the clusters is directly depended of the used distance function (and therefore the features) and the applied algorithm.
+
+\bigskip
+\noindent
+The focus of this thesis will be the comparisons between the distributions of the
+\begin{itemize}\setlength{\itemsep}{-2mm}
+\item $location$ feature $d_{loc}(x,y)$, the 
+\item $keywords$ feature $d_{key}(x,y)$, and a 
+\item combination of both $d_{comb}(x,y) = \alpha \cdot d_{loc}(x,y) + \beta \cdot d_{key}(x,y)$ ($\alpha \in (0,1), \beta = 1-\alpha$).
+\end{itemize}
+
+These features will be clustered based on a highly widespread clustering algorithm: DBSCAN, which is a density-based method.
+The relationship between those cluster distributions will be analyzed based on various cluster measures (for example \emph{perplexity}). The influence of $\alpha$ and $\beta$ on the combined feature is also of interest.
+
+A graph-based clustering algorithm based on \cite{Zhou2009} will be implemented and adapted to the data set, in order to compare the resulting distributions with the previous base-work. A graph consists of nodes (entities) and edges representing a relationship. The $si-entities$ can be transformed to such a graph, enabling the comparison of these two different clustering techniques.
+
